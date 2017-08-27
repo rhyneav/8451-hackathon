@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
+    "circular-json": "^0.3.3",
     "express": "^4.15.4",
     "lodash": "^4.17.4"
   },
