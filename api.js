@@ -43,6 +43,8 @@ router.post('/search', (req, res) => {
 
       res.send(itemAisles)
     })
+  }).catch((error) => {
+    res.send({ error })
   });
 });
 
@@ -53,7 +55,9 @@ router.post('/stores', (req, res) => {
     const json = JSON.parse(CircularJSON.stringify(data))
     const stores = json.data.data.dropdownStoreSearch
     res.send(stores)
-  })
+  }).catch((error) => {
+    res.send({ error })
+  });
 });
 
 router.post('/change', (req, res) => {
@@ -62,7 +66,9 @@ router.post('/change', (req, res) => {
   axios.post(graphUrl, graphQuery, { headers: { cookie }}).then((data) => {
     const json = JSON.parse(CircularJSON.stringify(data))
     res.send({store: json.data})
-  })
+  }).catch((error) => {
+    res.send({ error })
+  });
 });
 
 module.exports = router;
