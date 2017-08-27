@@ -45,4 +45,16 @@ router.post('/search', (req, res) => {
   });
 });
 
+router.post('/stores', (req, res) => {
+  const { zip } = req.body
+  const graphUrl = 'https://www.kroger.com/stores/api/graphql'
+  const graphQuery = {"query":"query dropdownStoreSearch($searchText: String!) {\n  dropdownStoreSearch(searchText: $searchText) {\n    divisionNumber\n    vanityName\n    storeNumber\n    phoneNumber\n    showShopThisStoreAndPreferredStoreButtons\n    distance\n    address {\n      addressLine1\n      addressLine2\n      city\n      countryCode\n      stateCode\n      zip\n    }\n    hours {\n      sundayClose\n      sundayOpen\n      mondayClose\n      mondayOpen\n      tuesdayClose\n      tuesdayOpen\n      wednesdayClose\n      wednesdayOpen\n      thursdayClose\n      thursdayOpen\n      fridayClose\n      fridayOpen\n      saturdayClose\n      saturdayOpen\n    }\n  }\n}\n","variables":{"searchText": zip},"operationName":"dropdownStoreSearch"}
+
+  axios.post(graphUrl, graphQuery, { headers: { cookie }}).then((data) => {
+    const json = JSON.parse(CircularJSON.stringify(data))
+    const stores = json.data.data.dropdownStoreSearch
+    res.send(stores)
+  })
+})
+
 module.exports = router;
